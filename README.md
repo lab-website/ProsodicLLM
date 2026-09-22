@@ -1,7 +1,3 @@
-# ProsodicLLM reproduction (multi-file PyTorch implementation)
-
-This repository reconstructs the architecture described in the supplied manuscript:
-**ProsodicLLM: Constraint-Aware LLM for Classical Chinese Poetry Prosody and Style Analysis**.
 
 ## What is implemented
 
@@ -77,10 +73,6 @@ Each line is one poem:
 
 ## Data
 
-The manuscript points to:
-
-- THU Chinese Classical Poetry / rhythm-rhyme resources: `https://github.com/THUNLP-AIPoet/Datasets`
-- Song Ci Corpus (CCSC): `https://doi.org/10.5281/zenodo.17798065`
 
 Run:
 
@@ -140,8 +132,4 @@ python scripts/run_ablation.py --config configs/base.yaml --name no_phonology
 
 `standard_lora` disables the token-conditioned gate but keeps graph and contrastive modules, matching the scope described in the manuscript.
 
-## Notes on Qwen compatibility
 
-The paper names Qwen-7B and says LoRA is applied to query/value projections. Modern Qwen-family checkpoints expose `q_proj`/`v_proj`; the original Qwen implementation may expose a fused `c_attn`. This code supports both patterns. For fused QKV, the gated update is injected into the Q and V thirds while K is left unchanged.
-
-If access to the exact legacy checkpoint becomes difficult, you can switch `backbone_name` to a compatible Qwen checkpoint for engineering validation, but that is **not** an exact paper reproduction.
