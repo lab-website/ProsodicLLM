@@ -1,0 +1,51 @@
+seed: 42
+
+model:
+  backbone_name: Qwen/Qwen-7B
+  trust_remote_code: true
+  torch_dtype: bfloat16
+  freeze_backbone: true
+  gradient_checkpointing: true
+  phonology_dim: 64
+  phonology_hidden: 256
+  graph_hidden: 512
+  graph_layers: 3
+  proj_dim: 256
+  num_tone_classes: 2
+  num_rhyme_classes: 128
+  num_style_classes: 32
+  num_form_classes: 64
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.0
+  lora_targets: [q_proj, v_proj, c_attn]
+  contrastive_temperature: 0.07
+
+loss:
+  lambda_tone: 0.5
+  lambda_rhyme: 0.5
+  lambda_scon: 1.0
+  lambda_style: 1.0
+  lambda_form: 1.0
+  tone_margin: 0.10
+
+training:
+  epochs: 30
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  per_device_batch_size: 1
+  gradient_accumulation_steps: 64
+  max_length: 512
+  num_workers: 2
+  mixed_precision: bf16
+  log_every: 10
+  save_every_epochs: 1
+  output_dir: outputs/prosodicllm
+
+data:
+  train_path: data/processed/train.jsonl
+  val_path: data/processed/val.jsonl
+  test_path: data/processed/test.jsonl
+  label_map_path: data/processed/label_maps.json
+  phonology_lexicon_path: data/processed/phonology_lexicon.json
